@@ -1,12 +1,12 @@
 #include<string>
-using namespace std;
 
 class item{
 public:
-	string name;
-	int attackvalue, defensevalue;
-	bool heal;
+    std::string name;
+    int attackvalue;
+    int defencevalue;
+    bool heal;
 
-	item();
-	item(string n,int a, int d,bool h);
+    item();
+    item(std::string name, int attack, int defence, bool h);
 };
