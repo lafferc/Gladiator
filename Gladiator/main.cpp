@@ -2,6 +2,7 @@
 #include"gladiator.h"
 #include<string>
 #include<ctime>
+#include<Windows.h>
 using namespace std;
 
 void level1(gladiator& A);
@@ -11,6 +12,8 @@ void main(){
 	
 	string name="";
 	gladiator A;
+
+	SetConsoleTitle(L"Gladiator v0.0.1");
 
 	cout<<"what is you name ?...";
 	cin>>name;
