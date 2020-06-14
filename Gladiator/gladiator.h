@@ -16,6 +16,7 @@ class gladiator
 
         void print();
         void heal(int h);
-        void normalattack(unit& target);
-        void strongattack(unit& target);
+        bool normalattack(unit& target);
+        bool strongattack(unit& target);
+        void on_kill();
 };

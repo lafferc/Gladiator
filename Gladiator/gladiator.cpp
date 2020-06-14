@@ -5,7 +5,7 @@ using namespace std;
 
 gladiator::gladiator()
 {
-    stats = unit((rand()%70 + 30), (rand()%12 + 3), (rand()%5 + 5), (rand()%7 + 3));
+    stats = unit((rand()%61 + 40), (rand()%12 + 3), (rand()%5 + 5), (rand()%7 + 3));
     healitems = 0;
     s_a_remaining = 10;
     kills = ((rand()%10 + 1)*stats.skill);
@@ -60,37 +60,47 @@ void gladiator::print()
 void gladiator::heal(int h)
 {
     stats.health = (stats.health + h);
-    if(stats.health < 100)
-    {
+    if(stats.health > 100)
         stats.health = 100;
-    }
 }
 
-void gladiator::normalattack(unit& target)
+bool gladiator::normalattack(unit& target)
 {
-    bool z = false;
-    z = stats.attack(target);
-    if(z == true)
+    if (stats.attack(target))
     {
-        if(target.alive == false)
-        {
-            kills++;
-        }
+        if (target.alive == false)
+            on_kill();
+        return true;
     }
+    return false;
 }
 
-void gladiator::strongattack(unit& target)
+bool gladiator::strongattack(unit& target)
 {
     int roll, damage;
+
+    if (s_a_remaining <= 0)
+        return false;
+
+    --s_a_remaining;
     
     roll = (rand()%6 + 1);
     damage = (stats.skill + stats.attackbonus) * roll;
 
-    target.health = (target.health - damage);
+    target.damage(damage);
+    
+    if (target.alive == false)
+        on_kill();
 
-    if(target.health < 0)
-    {
-        target.health = 0;
-        target.alive = false;
-    }
+    return true;
+}
+
+void gladiator::on_kill()
+{
+    ++kills;
+    if (rand() % (100 - (5 * stats.skill)) >= 50)
+        ++stats.attackbonus;
+    if (rand() % (100 - (5 * stats.skill)) >= 50)
+        ++stats.defencebonus;
+    ++stats.skill;
 }

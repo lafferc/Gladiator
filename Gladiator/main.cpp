@@ -14,7 +14,7 @@ void main()
     string name = "";
     gladiator player;
 
-    SetConsoleTitle(L"Gladiator v0.0.1");
+    SetConsoleTitle(L"Gladiator v0.0.2");
 
     cout << "What is your name ?...";
     cin >> name;
@@ -45,93 +45,95 @@ void level1(gladiator& player) {
     units[4].changename("unit5");
     boss.stats.changename("gladiator1");
 
+    cout << "You must defeat the 5 others that have also been condemned\n";
+
     for (int i = 0; i < 5; i++)
     {
         if (player.stats.alive == false)
         {
             cout << "You were killed by unit" << i << endl;
-            break;
+            cout << "You died in the arena\n";
+            return;
         }
-        else
-            units[i].print();
-
+        
+        units[i].print();
+ 
         while (player.stats.alive == true && units[i].alive == true)
         {
             cout << "use 'a' for normal attack or 's' for strong attack (ignores targets defence rolls). ";
             cin >> command;
             if (command == 's')
             {
-                if (player.s_a_remaining != 0)
-                {
-                    player.strongattack(units[i]);
-                    success = true;
-                    player.s_a_remaining--;
-                }
-                else
-                {
+                if ((success = player.strongattack(units[i])) == false)
                     cout << "You cannot perform that attack\n";
-                    success = false;
-                }
             }
             else
             {
-                success = player.stats.attack(units[i]);
+                if ((success = player.normalattack(units[i])) == false)
+                    cout << "Your attack failed\n";
             }
 
             if (success == true)
             {
                 units[i].print();
             }
+
             if (units[i].alive == true)
             {
-                success = units[i].attack(player.stats);
-                if (success == true)
-                {
+                if (units[i].attack(player.stats) == true)
                     player.stats.print();
-                }
+                else
+                    cout << units[i].name << "'s attack failed\n";
             }
         }
         if (player.stats.alive == true)
         {
-            player.stats.skill++;
             player.print();
         }
     }
 
+    player.heal(25);
+    player.s_a_remaining += 2;
+    player.print();
+
+    cout << "You are alone in the arena, surrounded by your fallen foe\n";
+    cout << "You barely have time to catch your breath, when a gate opens and another gladiator enters.\n This is not going to be easy\n";
+    system("Pause");
+
     boss.print();
-    while(player.stats.alive==true && boss.stats.alive==true){
-        cout<<"use 'a' for normal attack or 's' for strong attack  ";
-        cin>>command;
-        if(command=='s'){
-            if(player.s_a_remaining!=0){
-            player.strongattack(boss.stats);
-            success=true;
-            player.s_a_remaining--;
-            }
-            else{
-                cout<<"You cannot perform that attack\n";
-                success=false;
-            }
+    while(player.stats.alive==true && boss.stats.alive==true)
+    {
+        cout << "use 'a' for normal attack or 's' for strong attack  ";
+        cin >> command;
+        if (command == 's')
+        {
+            if ((success = player.strongattack(boss.stats)) == false)
+                cout << "You cannot perform that attack\n";
         }
         else
-            success = player.stats.attack(boss.stats);
+        {
+            if ((success = player.normalattack(boss.stats)) == false)
+                cout << "Your attack failed\n";
+        }
 
         if(success==true){
             boss.stats.print();
         }
         
-        if(boss.stats.alive==true){
-            success = boss.stats.attack(player.stats);
-            if(success==true){
+        if(boss.stats.alive==true)
+        {
+            if(boss.stats.attack(player.stats))
                 player.stats.print();
-            }
+            else
+                cout << boss.stats.name << "'s attack failed\n";
         }
     }
-    if(boss.stats.alive==false){
-        cout<<"\nGood work you kill the gladiator\n";
-        cout<<"\ngold taken from "<<boss.stats.name<<": "<<boss.money<<endl;
-        player.money=player.money+boss.money;
-        player.stats.skill=player.stats.skill+2;
+    if(boss.stats.alive==false)
+    {
+        cout << "\nGood work you kill the gladiator\n";
+        cout << "\ngold taken from "<<boss.stats.name<<": "<<boss.money<<endl;
+        player.money += boss.money;
+        player.stats.skill += 2;
         player.print();
     }
     else if(player.stats.alive==false){

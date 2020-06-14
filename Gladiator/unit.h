@@ -10,11 +10,11 @@ class unit
         int defencebonus;
         string name;
         bool alive;
-        int *p;
 
         unit();
         unit(int h, int s, int a, int d);
         void changename(string n);
         void print();
         bool attack(unit& target);
+        void damage(int amount);
 };

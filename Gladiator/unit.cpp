@@ -7,10 +7,10 @@ using namespace std;
 unit::unit()
 {
     name = "unit";
-    health = (rand()%100 + 1);
-    skill = (rand()%5 + 1);
-    attackbonus = (rand()%5 + 1);
-    defencebonus = (rand()%5 + 1);
+    health = (rand()%91 + 10);
+    skill = (rand()%2 + 1);
+    attackbonus = (rand()%4);
+    defencebonus = (rand()%4);
     alive = true;
 }
 
@@ -57,17 +57,19 @@ bool unit::attack(unit& target)
     
     if(damage > 0)
     {
-        target.health = target.health-damage;
-        if(target.health < 0)
-        {
-            target.health = 0;
-            target.alive = false;
-        }
+        target.damage(damage);
         return true;
     }
-    else
+
+    return false;
+}
+
+void unit::damage(int amount)
+{
+    health -= amount;
+    if (health <= 0)
     {
-        cout << name << "'s attack failed\n";
-        return false;
+        health = 0;
+        alive = false;
     }
 }
