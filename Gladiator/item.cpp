@@ -1,7 +1,7 @@
 #include<string>
 #include"item.h"
 
-item::item()
+Item::Item()
 {
     name = "";
     attackvalue = 0;
@@ -9,7 +9,7 @@ item::item()
     heal = false;
 }
 
-item::item(std::string n, int a, int d, bool h)
+Item::Item(std::string n, int a, int d, bool h)
 {
     name = n;
     attackvalue = a;

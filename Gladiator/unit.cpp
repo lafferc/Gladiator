@@ -4,17 +4,17 @@
 using namespace std;
 
 
-unit::unit()
+Unit::Unit()
 {
     name = "unit";
-    health = (rand()%91 + 10);
-    skill = (rand()%2 + 1);
-    attackbonus = (rand()%4);
-    defencebonus = (rand()%4);
+    health = 100;
+    skill = 1;
+    attackbonus = 0;
+    defencebonus = 0;
     alive = true;
 }
 
-unit::unit(int h, int s, int a, int d)
+Unit::Unit(int h, int s, int a, int d)
 {
     health = h;
     skill = s;
@@ -23,12 +23,12 @@ unit::unit(int h, int s, int a, int d)
     alive = true;
 }
 
-void unit::changename(string n)
+void Unit::changename(string n)
 {	
     name = n;
 }
 
-void unit::print()
+void Unit::print()
 {
     cout << name << endl;
     cout << "Health=" << health << endl;
@@ -43,15 +43,15 @@ void unit::print()
     cout << endl;
 }
 
-bool unit::attack(unit& target)
+bool Unit::attack(Unit& target)
 {
     int attackvalue, defensevalue, roll, damage;
     
     roll = (rand()%6 + 1);
-    attackvalue = (skill + attackbonus) * roll;
+    attackvalue = attack_strength() * roll;
  
     roll = (rand()%6 + 1);
-    defensevalue = (target.skill + target.defencebonus) * roll;
+    defensevalue = target.defence_strength() * roll;
     
     damage = attackvalue - defensevalue;
     
@@ -64,7 +64,7 @@ bool unit::attack(unit& target)
     return false;
 }
 
-void unit::damage(int amount)
+void Unit::damage(int amount)
 {
     health -= amount;
     if (health <= 0)

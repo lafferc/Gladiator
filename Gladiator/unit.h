@@ -1,7 +1,7 @@
 #include<string>
 using namespace std;
 
-class unit
+class Unit
 {
     public:
         int health;
@@ -11,10 +11,13 @@ class unit
         string name;
         bool alive;
 
-        unit();
-        unit(int h, int s, int a, int d);
+        Unit();
+        Unit(int h, int s, int a, int d);
         void changename(string n);
-        void print();
-        bool attack(unit& target);
+        virtual void print();
+        virtual bool attack(Unit& target);
         void damage(int amount);
+
+        virtual int attack_strength() { return skill + attackbonus; };
+        virtual int defence_strength() { return skill + defencebonus; };
 };
