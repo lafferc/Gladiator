@@ -4,6 +4,13 @@
 class Gladiator: public Unit
 {
     public: 
+        enum Rank
+        {
+            Condemnabitur, // condemned
+            Crupellarii, // trainee, slave gladiators
+            Rudiarius, // freeman 
+            Elite, 
+        };
         int kills;
         int healitems;
         int money;
@@ -12,7 +19,7 @@ class Gladiator: public Unit
 
         Gladiator();
         Gladiator(std::string name, int health, int skill, int abonus, int dbonus, int money, std::string rank);
-        static Gladiator* factory(string name);
+        static Gladiator* factory(Gladiator::Rank rank);
         static Unit* create_condemned(string name);
 
         void print();

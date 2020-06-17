@@ -103,7 +103,7 @@ void level1(Gladiator& player) {
     cout << "You barely have time to catch your breath, when a gate opens and another gladiator enters.\n This is not going to be easy\n";
     system("Pause");
 
-    boss = Gladiator::factory("gladiator1");
+    boss = Gladiator::factory(Gladiator::Crupellarii);
 
     battle(player, *boss);
 
@@ -112,7 +112,6 @@ void level1(Gladiator& player) {
         cout << "\nGood work you kill the gladiator\n";
         cout << "\ngold taken from " << boss->name << ": " << boss->money << endl;
         player.money += boss->money;
-        player.skill += 2;
         player.print();
     }
     else if(player.alive==false){

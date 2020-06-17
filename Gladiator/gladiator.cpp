@@ -1,7 +1,25 @@
 #include<iostream>
-#include"gladiator.h"
 #include<string>
+#include<vector>
+
+#include "gladiator.h"
+#include "utils.h"
 using namespace std;
+
+vector<const char*> g_names = {
+    "Atticus",
+    "Augustus",
+    "Brutus",
+    "Cato",
+    "Claudius",
+    "Cornelius",
+    "Darius",
+    "Gaius",
+    "Julius",
+    "Marcus",
+    "Maximus",
+    "Octavius"
+};
 
 Gladiator::Gladiator()
 {
@@ -23,37 +41,49 @@ Gladiator::Gladiator(string n, int health, int skill, int abonus, int dbonus, in
     s_a_remaining = 10;
 }
 
-Gladiator* Gladiator::factory(string name)
+Gladiator* Gladiator::factory(Gladiator::Rank rank)
 {
     Gladiator* g = new Gladiator();
 
-    g->name = name;
-    g->health = (rand() % 61 + 40);
-    g->skill = (rand() % 12 + 3);
-    g->attackbonus = (rand() % 5 + 5);
-    g->defencebonus = (rand() % 7 + 3);
+    g->name = g_names[rand() % g_names.size()];
+    //g->rank = rank;
 
-    g->kills = ((rand() % 10 + 1) * g->skill);
-
-    if(g->skill < 3)
+    switch (rank)
     {
+    case Gladiator::Condemnabitur:
         g->rank = "condemned";
-        g->money = ((rand()%10+1)*(1 + g->kills));
-    }
-    else if(g->skill < 7)
-    {
+        g->health = rand_range(10, 90);
+        g->skill = rand_range(1, 2);
+        g->attackbonus = (rand() % 4);
+        g->defencebonus = (rand() % 4);
+        break;
+    case Gladiator::Crupellarii:
         g->rank = "slave";
-        g->money = ((rand()%30 + 5)*(1 + g->kills));
-    }
-    else if(g->skill < 12)
-    {
+        g->health = (rand() % 61 + 40);
+        g->skill = rand_range(3, 6);
+        g->attackbonus = (rand() % 5 + 5);
+        g->defencebonus = (rand() % 7 + 3);
+
+        g->kills = ((rand() % 10 + 1) * g->skill);
+        g->money = ((rand() % 30 + 5) * (1 + g->kills));
+    case Gladiator::Rudiarius:
         g->rank = "free man";
-        g->money = ((rand()%70 + 20)*(1 + g->kills));
-    }
-    else
-    {
+        g->health = (rand() % 61 + 40);
+        g->skill = rand_range(7, 11);
+        g->attackbonus = (rand() % 5 + 5);
+        g->defencebonus = (rand() % 7 + 3);
+
+        g->kills = ((rand() % 10 + 1) * g->skill);
+        g->money = ((rand() % 70 + 20) * (1 + g->kills));
+    case Gladiator::Elite:
         g->rank = "elite gladiator";
-        g->money = ((rand()%100 + 50)*(1 + g->kills));
+        g->health = (rand() % 61 + 40);
+        g->skill = rand_range(12, 14);
+        g->attackbonus = (rand() % 5 + 5);
+        g->defencebonus = (rand() % 7 + 3);
+
+        g->kills = ((rand() % 10 + 1) * g->skill);
+        g->money = ((rand() % 100 + 50) * (1 + g->kills));
     }
 
     return g;
@@ -61,15 +91,7 @@ Gladiator* Gladiator::factory(string name)
 
 Unit* Gladiator::create_condemned(string name)
 {
-    Unit* condemned = new Unit();
-
-    condemned->name = name;
-    condemned->health = (rand() % 91 + 10);
-    condemned->skill = (rand() % 2 + 1);
-    condemned->attackbonus = (rand() % 4);
-    condemned->defencebonus = (rand() % 4);
-
-    return condemned;
+    return factory(Gladiator::Condemnabitur);
 }
 
 void Gladiator::print()
