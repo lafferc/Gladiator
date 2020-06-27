@@ -21,7 +21,7 @@ void main()
     cout << "Welcome to Rome " << name << ", you have been condemned to die in the arena\n";
     cout << "Here are your stats\n";
 
-    player = Gladiator(name, 100, 1, 1, 1, 0, "condemned");
+    player = Gladiator(name, 100, 1, 1, 1, 0, Gladiator::Rank::Condemnabitur);
     player.print();
 
     cout << "If your health reaches 0 you will die\n starting level 1\n";
@@ -81,29 +81,31 @@ void level1(Gladiator& player) {
     for (int i = 0; i < 5; i++)
     {
         Unit* unit;
+
+        unit = Gladiator::create_condemned();
+        
+        battle(player, *unit);
+
         if (player.alive == false)
         {
-            cout << "You were killed by unit" << i << endl;
+            cout << "You were killed by " << unit->name << endl;
             cout << "You died in the arena\n";
             return;
         }
 
-        unit = Gladiator::create_condemned("unit" + to_string(i + 1));
-        
-        battle(player, *unit);
-
         delete unit;
     }
+
+    cout << "You are alone in the arena, surrounded by your fallen foe\n";
+    cout << "You barely have time to catch your breath, when a gate opens and another gladiator enters.\n This is not going to be easy\n";
 
     player.heal(25);
     player.s_a_remaining += 2;
     player.print();
 
-    cout << "You are alone in the arena, surrounded by your fallen foe\n";
-    cout << "You barely have time to catch your breath, when a gate opens and another gladiator enters.\n This is not going to be easy\n";
     system("Pause");
 
-    boss = Gladiator::factory(Gladiator::Crupellarii);
+    boss = Gladiator::factory(Gladiator::Rank::Crupellarii);
 
     battle(player, *boss);
 

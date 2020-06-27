@@ -20,4 +20,7 @@ class Unit
 
         virtual int attack_strength() { return skill + attackbonus; };
         virtual int defence_strength() { return skill + defencebonus; };
+
+        int attack_roll();
+        int defence_roll();
 };

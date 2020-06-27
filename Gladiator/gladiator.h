@@ -4,27 +4,32 @@
 class Gladiator: public Unit
 {
     public: 
-        enum Rank
+        enum class Rank
         {
             Condemnabitur, // condemned
-            Crupellarii, // trainee, slave gladiators
+            Crupellarii, // trainee gladiators
             Rudiarius, // freeman 
-            Elite, 
+            Elite, //
         };
+
         int kills;
         int healitems;
         int money;
         int s_a_remaining;
-        std::string rank;
+
 
         Gladiator();
-        Gladiator(std::string name, int health, int skill, int abonus, int dbonus, int money, std::string rank);
-        static Gladiator* factory(Gladiator::Rank rank);
-        static Unit* create_condemned(string name);
+        Gladiator(std::string name, int health, int skill, int abonus, int dbonus, int money, Rank rank);
+        static Gladiator* factory(Rank rank);
+        static Unit* create_condemned();
 
         void print();
         void heal(int h);
         bool attack(Unit& target);
         bool strongattack(Unit& target);
         void on_kill();
+        std::string rank_str();
+
+    private:
+        Rank rank;
 };

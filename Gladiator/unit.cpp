@@ -1,6 +1,9 @@
 #include <iostream>
-#include "unit.h"
 #include <string>
+#include <math.h> 
+
+#include "unit.h"
+#include "utils.h"
 using namespace std;
 
 
@@ -33,8 +36,8 @@ void Unit::print()
     cout << name << endl;
     cout << "Health=" << health << endl;
     cout << "Skill=" << skill << endl;
-    cout << "attack strength=" << (skill + attackbonus) << endl;
-    cout << "defense strength=" << (skill + defencebonus) << endl;
+    cout << "attack strength=" << attack_strength() << endl;
+    cout << "defense strength=" << defence_strength() << endl;
 
     if(alive == true)
         cout << "alive \n";
@@ -45,22 +48,14 @@ void Unit::print()
 
 bool Unit::attack(Unit& target)
 {
-    int attackvalue, defensevalue, roll, damage;
-    
-    roll = (rand()%6 + 1);
-    attackvalue = attack_strength() * roll;
- 
-    roll = (rand()%6 + 1);
-    defensevalue = target.defence_strength() * roll;
-    
-    damage = attackvalue - defensevalue;
+    int damage;
+    damage = attack_roll() - target.defence_roll();
     
     if(damage > 0)
     {
         target.damage(damage);
         return true;
     }
-
     return false;
 }
 
@@ -72,4 +67,14 @@ void Unit::damage(int amount)
         health = 0;
         alive = false;
     }
+}
+
+int Unit::attack_roll()
+{
+    return attack_strength() + round(((float)attack_strength() * rand_range(1,6))/2);
+}
+
+int Unit::defence_roll()
+{
+    return round(((float)defence_strength() * rand_range(1, 6))/2);
 }
