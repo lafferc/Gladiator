@@ -78,12 +78,14 @@
   <ItemGroup>
     <ClInclude Include="gladiator.h" />
     <ClInclude Include="item.h" />
+    <ClInclude Include="levels.h" />
     <ClInclude Include="unit.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gladiator.cpp" />
     <ClCompile Include="item.cpp" />
+    <ClCompile Include="levels.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="unit.cpp" />
   </ItemGroup>

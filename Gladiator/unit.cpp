@@ -36,13 +36,8 @@ void Unit::print()
     cout << name << endl;
     cout << "Health=" << health << endl;
     cout << "Skill=" << skill << endl;
-    cout << "attack strength=" << attack_strength() << endl;
-    cout << "defense strength=" << defence_strength() << endl;
-
-    if(alive == true)
-        cout << "alive \n";
-    else
-        cout << "dead \n";
+    cout << "attack strength: " << attack_strength() << "  defense strength: " << defence_strength() << endl;
+    cout << (alive ? "alive" : "dead") << endl;
     cout << endl;
 }
 
@@ -71,10 +66,10 @@ void Unit::damage(int amount)
 
 int Unit::attack_roll()
 {
-    return attack_strength() + round(((float)attack_strength() * rand_range(1,6))/2);
+    return attack_strength() + int(round(((float)attack_strength() * rand_range(1,6))/2));
 }
 
 int Unit::defence_roll()
 {
-    return round(((float)defence_strength() * rand_range(1, 6))/2);
+    return int(round(((float)defence_strength() * rand_range(1, 6))/2));
 }

@@ -6,7 +6,7 @@
 #include "utils.h"
 using namespace std;
 
-vector<const char*> g_names = {
+vector<const char*> g_gladiator_names = {
     "Atticus",
     "Augustus",
     "Brutus",
@@ -28,7 +28,7 @@ vector<const char*> g_names = {
 Gladiator::Gladiator()
 {
     healitems = 0;
-    s_a_remaining = 10;
+    s_a_remaining = MAX_STRONG_ATT;
     kills = 0;
     money = 0;
     rank = Rank::Crupellarii;
@@ -42,14 +42,14 @@ Gladiator::Gladiator(string n, int health, int skill, int abonus, int dbonus, in
     kills = 0;
     money = m;
     rank = r;
-    s_a_remaining = 10;
+    s_a_remaining = MAX_STRONG_ATT;
 }
 
 Gladiator* Gladiator::factory(Gladiator::Rank rank)
 {
     Gladiator* g = new Gladiator();
 
-    g->name = g_names[rand() % g_names.size()];
+    g->name = g_gladiator_names[rand() % g_gladiator_names.size()];
     g->rank = rank;
 
     switch (rank)
@@ -99,31 +99,32 @@ Unit* Gladiator::create_condemned()
 
 void Gladiator::print()
 {
-    cout << rank_str() << ": " << name << endl;
+    cout << rank << ": " << name << endl;
     cout << "Health: " << health << "  Skill: " << skill <<endl;
-    cout << "attack strength: " << attack_strength() <<"  defense strength: " << defence_strength() << endl;
-    cout << "strong attacks remaining: " << s_a_remaining << endl;
-    cout << "kills: " << kills << endl;
-    cout << "gold coins: " << money << endl;
-    if(alive == true)
-        cout << "alive \n";
-    else
-        cout << "dead \n";
+    cout << "Attack strength: " << attack_strength() <<"  Defense strength: " << defence_strength() << endl;
+    cout << "Strong attacks remaining: " << s_a_remaining << endl;
+    cout << "Kills: " << kills << endl;
+    cout << "Gold coins: " << money << endl;
+    cout << (alive ? "alive" : "dead") << endl;
     cout << endl;
 }
 
 void Gladiator::heal(int h)
 {
     health += h;
-    if(health > 100)
-        health = 100;
+    if(health > MAX_HEALTH)
+        health = MAX_HEALTH;
+
+    s_a_remaining += (h * MAX_STRONG_ATT) / MAX_HEALTH;
+    if (s_a_remaining > MAX_STRONG_ATT)
+        s_a_remaining = MAX_STRONG_ATT;
 }
 
 bool Gladiator::attack(Unit& target)
 {
     if (Unit::attack(target))
     {
-        if (target.alive == false)
+        if (!target.is_alive())
             on_kill();
         return true;
     }
@@ -138,7 +139,7 @@ bool Gladiator::strongattack(Unit& target)
     --s_a_remaining;
     target.damage(attack_roll());
     
-    if (target.alive == false)
+    if (!target.is_alive())
         on_kill();
 
     return true;
@@ -154,17 +155,13 @@ void Gladiator::on_kill()
     ++skill;
 }
 
-string Gladiator::rank_str()
+int Gladiator::loot(Gladiator& target)
 {
-    switch (rank)
-    {
-    case Rank::Condemnabitur:
-        return "condemnabitur";
-    case Rank::Crupellarii:
-        return "crupellarii";
-    case Rank::Rudiarius:
-        return "rudiarius";
-    case Rank::Elite:
-        return "elite gladiator";
-    }
+    int amount = target.money;
+
+    target.money -= amount;
+    money += amount;
+
+    return amount;
 }
+
