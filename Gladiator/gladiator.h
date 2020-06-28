@@ -24,6 +24,8 @@ class Gladiator: public Unit
         static Gladiator* factory(Rank rank);
         static Unit* create_condemned();
 
+        void set_rank(Rank new_rank) { rank = new_rank; };
+
         void print();
 
         /// <summary>
