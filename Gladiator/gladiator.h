@@ -53,7 +53,7 @@ class Gladiator: public Unit
         void on_kill();
 };
 
-std::ostream& operator<<(std::ostream& os, Gladiator::Rank& rank)
+static std::ostream& operator<<(std::ostream& os, Gladiator::Rank& rank)
 {
     switch (rank)
     {

@@ -6,13 +6,13 @@ using namespace std;
 
 void battle(Gladiator& player, Unit& oponent)
 {
-    char command;
-    bool success;
-
     oponent.print();
 
     while (player.is_alive() && oponent.is_alive())
     {
+        char command;
+        bool success;
+
         cout << "use 'a' for normal attack or 's' for strong attack (ignores targets defence rolls). ";
         cin >> command;
         if (command == 's')
@@ -45,7 +45,6 @@ void battle(Gladiator& player, Unit& oponent)
     }
 }
 
-
 bool level1(Gladiator& player) {
     Gladiator* boss;
 
@@ -59,7 +58,7 @@ bool level1(Gladiator& player) {
 
         battle(player, *unit);
 
-        if (!player.is_alive())
+        if (player.is_dead())
         {
             cout << "You were killed by " << *unit << endl;
             cout << "You died in the arena\n";
@@ -81,13 +80,13 @@ bool level1(Gladiator& player) {
 
     battle(player, *boss);
 
-    if (boss->is_alive())
+    if (boss->is_dead())
     {
         cout << "\nGood work you kill the gladiator\n";
         cout << "\ngold taken from " << boss << ": " << player.loot(*boss) << endl;
         player.print();
     }
-    else if (!player.is_alive()) {
+    else if (player.is_dead()) {
         cout << "You died in the arena\n";
     }
 
@@ -95,7 +94,6 @@ bool level1(Gladiator& player) {
 
     return player.is_alive();
 }
-
 
 std::vector<level_t> load_levels()
 {

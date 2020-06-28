@@ -1,3 +1,6 @@
+#ifndef __ITEM_H__
+#define __ITEM_H__
+
 #include<string>
 
 class Item{
@@ -10,3 +13,4 @@ class Item{
         Item();
         Item(std::string name, int attack, int defence, bool h);
 };
+#endif // !__ITEM_H__

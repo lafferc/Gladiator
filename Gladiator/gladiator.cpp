@@ -124,7 +124,7 @@ bool Gladiator::attack(Unit& target)
 {
     if (Unit::attack(target))
     {
-        if (!target.is_alive())
+        if (target.is_dead())
             on_kill();
         return true;
     }
@@ -139,7 +139,7 @@ bool Gladiator::strongattack(Unit& target)
     --s_a_remaining;
     target.damage(attack_roll());
     
-    if (!target.is_alive())
+    if (target.is_dead())
         on_kill();
 
     return true;

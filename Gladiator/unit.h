@@ -1,3 +1,6 @@
+#ifndef __UNIT_H__
+#define __UNIT_H__
+
 #include<string>
 #include <iostream>
 
@@ -14,6 +17,7 @@ class Unit
         virtual int attack_strength() { return skill + attackbonus; };
         virtual int defence_strength() { return skill + defencebonus; };
         bool is_alive() { return alive; };
+        bool is_dead() { return !alive; };
 
         int attack_roll();
         int defence_roll();
@@ -32,3 +36,5 @@ class Unit
         std::string name;
         bool alive;
 };
+
+#endif // !__UNIT_H__
